@@ -20,18 +20,18 @@ export default function HomePageView() {
     <>
       <Section title="Trending today">
         <ul className={s.movies}>
-          {movies.map(({ id, poster_path, original_name, title }) => {
+          {movies.map(({ id, poster_path, original_name, title, name }) => {
             return (
               <li key={id} className={s.movies__item}>
                 <div className={s.movies__wrapper}>
                   <img
                     src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
-                    alt={title || original_name}
+                    alt={title || name || original_name}
                     width="250"
                     className={s.movies__img}
                   />
                   <div className={s.title__wrapper}>
-                    <p className={s.movies__title}>{title || original_name}</p>
+                    <p className={s.movies__title}>{title || name || original_name}</p>
                   </div>
                 </div>
               </li>
