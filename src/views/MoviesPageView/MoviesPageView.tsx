@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import Section from '../../components/Section/Section';
+import FindMoviesForm from '../../components/FindMoviesForm/FindMoviesForm';
 
 export default function MoviesPageView() {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState('');
 
-  const changeQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const q = e.currentTarget.value;
+  const onSubmit = (q: string) => {
+    if (q.trim() === '') {
+      return;
+    }
 
     setQuery(q);
   };
 
   return (
     <Section title="Find a movie">
-      <input type="text" onChange={changeQuery} value={query} />
+      <FindMoviesForm onSubmitForm={onSubmit}></FindMoviesForm>
     </Section>
   );
 }
