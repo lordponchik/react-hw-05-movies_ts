@@ -23,5 +23,5 @@ export async function fetchMovies(q: string) {
 }
 
 export async function fetchMoviesDetails(id: number) {
-  return await fetchMoviesAPI(`search/movie?movie/${id}?language=en-US`);
+  return await fetchMoviesAPI(`movie/${id}?language=en-US`);
 }
