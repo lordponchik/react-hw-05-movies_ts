@@ -7,12 +7,17 @@ const options = {
   },
 };
 
-export default async function fetchMovies() {
-  const request = await fetch(
-    'https://api.themoviedb.org/3/trending/all/day?language=en-US',
-    options
-  );
+async function fetchMoviesAPI(route: string) {
+  const request = await fetch(`https://api.themoviedb.org/3/${route}`, options);
   const results = await request.json();
 
   return results;
+}
+
+export async function fetchTrendingMovies() {
+  return await fetchMoviesAPI('trending/all/day?language=en-US');
+}
+
+export async function fetchMovies(q: string) {
+  return await fetchMoviesAPI(`search/movie?query=${q}&include_adult=false&language=en-US&page=1`);
 }
