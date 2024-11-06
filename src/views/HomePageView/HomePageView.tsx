@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import fetchMovies from '../../services/api';
+import { fetchTrendingMovies } from '../../services/api';
 import s from './HomePageView.module.css';
 import Section from '../../components/Section/Section';
 
@@ -8,7 +8,7 @@ export default function HomePageView() {
 
   useEffect(() => {
     async function requestMovies() {
-      const { results } = await fetchMovies();
+      const { results } = await fetchTrendingMovies();
 
       setMovies(results);
     }
