@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import Section from '../../components/Section/Section';
 import FindMoviesForm from '../../components/FindMoviesForm/FindMoviesForm';
 import { fetchMovies } from '../../services/api';
-import s from './MoviesPageView.module.css';
+import MoviesList from '../../components/MoviesList/MoviesList';
+
 export default function MoviesPageView() {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState('');
@@ -34,26 +35,7 @@ export default function MoviesPageView() {
     <Section title="Find a movie">
       <FindMoviesForm onSubmitForm={onSubmit}></FindMoviesForm>
 
-      <ul>
-        {movies &&
-          movies.map(({ id, poster_path, original_name, title, name }) => {
-            return (
-              <li key={id} className={s.movies__item}>
-                <div className={s.movies__wrapper}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
-                    alt={title || name || original_name}
-                    width="250"
-                    className={s.movies__img}
-                  />
-                  <div className={s.title__wrapper}>
-                    <p className={s.movies__title}>{title || name || original_name}</p>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-      </ul>
+      {movies && <MoviesList movies={movies}></MoviesList>}
     </Section>
   );
 }
