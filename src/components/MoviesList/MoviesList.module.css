@@ -1,3 +1,6 @@
+.moviesWrapper {
+  position: relative;
+}
 .movies {
   margin-bottom: 50px;
   display: flex;

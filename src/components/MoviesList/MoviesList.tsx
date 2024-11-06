@@ -8,10 +8,12 @@ interface Props {
 
 export default function MoviesList({ movies }: Props) {
   return (
-    <ul className={s.movies}>
-      {movies.map(movie => {
-        return <MoviesListItem key={movie.id} movie={movie}></MoviesListItem>;
-      })}
-    </ul>
+    <div className={s.moviesWrapper}>
+      <ul className={s.movies}>
+        {movies.map(movie => {
+          return <MoviesListItem key={movie.id} movie={movie}></MoviesListItem>;
+        })}
+      </ul>
+    </div>
   );
 }

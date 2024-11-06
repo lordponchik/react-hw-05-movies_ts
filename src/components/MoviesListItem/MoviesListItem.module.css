@@ -3,7 +3,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  position: relative;
+  top: 100px;
+  opacity: 0;
+
+  animation: showMovie 1.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 1 both;
 }
+
+@keyframes showMovie {
+  0% {
+    opacity: 0;
+    top: 100px;
+  }
+
+  100% {
+    opacity: 1;
+    top: 0;
+  }
+}
+
 .imgWrapper {
   position: relative;
 }
