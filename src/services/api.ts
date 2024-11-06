@@ -21,3 +21,7 @@ export async function fetchTrendingMovies() {
 export async function fetchMovies(q: string) {
   return await fetchMoviesAPI(`search/movie?query=${q}&include_adult=false&language=en-US&page=1`);
 }
+
+export async function fetchMoviesDetails(id: number) {
+  return await fetchMoviesAPI(`search/movie?movie/${id}?language=en-US`);
+}
