@@ -1,0 +1,35 @@
+.section {
+  padding: 15px 20px;
+}
+.movieWrapper {
+  display: flex;
+}
+.imgWrapper {
+  width: 20%;
+  margin-right: 50px;
+}
+.movieDescription {
+  width: 75%;
+}
+.movieTitle {
+  margin-bottom: 5px;
+
+  font-size: 30px;
+}
+.userScore {
+  margin-bottom: 20px;
+}
+.overviewTitle {
+  margin-bottom: 5px;
+}
+.overview {
+  margin-bottom: 20px;
+
+  line-height: 1.4;
+}
+.genresTitle {
+  margin-bottom: 5px;
+}
+.genres {
+  list-style-type: disc;
+}
