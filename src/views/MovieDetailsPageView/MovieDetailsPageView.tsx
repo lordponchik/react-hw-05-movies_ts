@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, Outlet, useParams } from 'react-router-dom';
 import { fetchMoviesDetails } from '../../services/api';
 import s from './MovieDetailsPageView.module.css';
 
@@ -84,12 +84,14 @@ export default function MovieDetailsPageView() {
             <h3>Additional information</h3>
             <ul>
               <li>
-                <NavLink to="Cast">Cast</NavLink>
+                <NavLink to="cast">Cast</NavLink>
               </li>
               <li>
-                <NavLink to="Reviews">Reviews</NavLink>
+                <NavLink to="reviews">Reviews</NavLink>
               </li>
             </ul>
+
+            <Outlet />
           </div>
         </section>
       )}
