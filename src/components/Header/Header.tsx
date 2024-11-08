@@ -12,11 +12,7 @@ export default function Header() {
             </NavLink>
           </li>
           <li className={s.nav__item}>
-            <NavLink
-              end
-              to="/movies"
-              className={({ isActive }) => (isActive ? s.active : s.nav__link)}
-            >
+            <NavLink to="/movies" className={({ isActive }) => (isActive ? s.active : s.nav__link)}>
               Movies
             </NavLink>
           </li>
