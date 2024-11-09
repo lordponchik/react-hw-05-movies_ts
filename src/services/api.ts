@@ -25,3 +25,7 @@ export async function fetchMovies(q: string) {
 export async function fetchMoviesDetails(id: number) {
   return await fetchMoviesAPI(`movie/${id}?language=en-US`);
 }
+
+export async function fetchMoviesCredits(id: number) {
+  return await fetchMoviesAPI(`movie/${id}/credits?language=en-US`);
+}
