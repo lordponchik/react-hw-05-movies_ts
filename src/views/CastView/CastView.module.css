@@ -1,0 +1,18 @@
+.cast {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.castItem {
+  width: calc((100% / 8) - 10px);
+
+  text-align: center;
+}
+.profileImg {
+  margin: 0 auto;
+}
+.name {
+  font-size: 15px;
+}
