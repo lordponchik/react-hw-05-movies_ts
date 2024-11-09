@@ -81,13 +81,17 @@ export default function MovieDetailsPageView() {
             </div>
           </div>
           <div>
-            <h3>Additional information</h3>
-            <ul>
-              <li>
-                <NavLink to="cast">Cast</NavLink>
+            <h3 className={s.addtionalInfo}>Additional information</h3>
+            <ul className={s.detailsNav}>
+              <li className={s.detailsItem}>
+                <NavLink to="cast" className={s.detailsLink}>
+                  Cast
+                </NavLink>
               </li>
               <li>
-                <NavLink to="reviews">Reviews</NavLink>
+                <NavLink to="reviews" className={s.detailsLink}>
+                  Reviews
+                </NavLink>
               </li>
             </ul>
 

@@ -33,3 +33,23 @@
 .genres {
   list-style-type: disc;
 }
+.addtionalInfo {
+  margin-bottom: 10px;
+
+  text-align: center;
+}
+.detailsNav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.detailsItem:not(:last-child) {
+  margin-right: 15px;
+}
+.detailsLink {
+  color: rgb(138, 138, 138);
+}
+.detailsLink:hover,
+.detailsLink:focus {
+  color: #000;
+}
