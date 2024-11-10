@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useLocation, useParams } from 'react-router-dom'
 import { fetchMoviesDetails } from '../../services/api';
 import s from './MovieDetailsPageView.module.css';
 import InformationMessage from '../../components/InformationMessage/InformationMessage';
+import Loader from '../../components/Loader/Loader';
 
 interface IGenres {
   id: number;
@@ -26,6 +27,7 @@ const img_url =
 
 export default function MovieDetailsPageView() {
   const [movie, setMovie] = useState<IMovieDetails | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { movieId } = useParams();
   const location = useLocation();
   const backUrl = location?.state?.from ?? '/';
@@ -33,9 +35,15 @@ export default function MovieDetailsPageView() {
 
   useEffect(() => {
     async function requestMoviesDetails() {
-      const results = await fetchMoviesDetails(Number(movieId));
+      setIsLoading(true);
+      try {
+        const results = await fetchMoviesDetails(Number(movieId));
 
-      setMovie(results);
+        setMovie(results);
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     requestMoviesDetails();
@@ -43,6 +51,7 @@ export default function MovieDetailsPageView() {
 
   return (
     <>
+      {isLoading && <Loader />}
       {movie ? (
         <section className={s.section}>
           <Link to={backUrl} className={s.linkBack}>
