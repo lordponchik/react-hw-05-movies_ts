@@ -15,7 +15,7 @@ async function fetchMoviesAPI(route: string) {
 }
 
 export async function fetchTrendingMovies() {
-  return await fetchMoviesAPI('trending/all/day?language=en-US');
+  return await fetchMoviesAPI('trending/movie/day?language=en-US');
 }
 
 export async function fetchMovies(q: string) {
