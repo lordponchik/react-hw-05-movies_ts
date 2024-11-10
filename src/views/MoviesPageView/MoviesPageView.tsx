@@ -3,19 +3,18 @@ import Section from '../../components/Section/Section';
 import FindMoviesForm from '../../components/FindMoviesForm/FindMoviesForm';
 import { fetchMovies } from '../../services/api';
 import MoviesList from '../../components/MoviesList/MoviesList';
+import { useSearchParams } from 'react-router-dom';
 
 export default function MoviesPageView() {
-  const [movies, setMovies] = useState([]);
-  const [query, setQuery] = useState('');
-  let isFirstRender = useRef<boolean>(true);
+  const [movies, setMovies] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query');
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+    if (query === null || query === '') return;
+
     async function requestMovies() {
-      const { results } = await fetchMovies(query);
+      const { results } = await fetchMovies(query as string);
 
       setMovies(results);
     }
@@ -24,16 +23,17 @@ export default function MoviesPageView() {
   }, [query]);
 
   const onSubmit = (q: string) => {
-    if (q.trim() === '') {
+    if (q === query) {
       return;
     }
 
-    setQuery(q);
+    setMovies(null);
+    setSearchParams({ query: q });
   };
 
   return (
     <Section title="Find a movie">
-      <FindMoviesForm onSubmitForm={onSubmit}></FindMoviesForm>
+      <FindMoviesForm onSubmitForm={onSubmit} defQuery={query ?? ''}></FindMoviesForm>
 
       {movies && <MoviesList movies={movies}></MoviesList>}
     </Section>
