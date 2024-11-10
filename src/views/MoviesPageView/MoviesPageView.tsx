@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Section from '../../components/Section/Section';
 import FindMoviesForm from '../../components/FindMoviesForm/FindMoviesForm';
 import { fetchMovies } from '../../services/api';
