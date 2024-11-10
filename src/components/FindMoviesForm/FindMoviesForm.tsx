@@ -2,11 +2,12 @@ import { useState } from 'react';
 import s from './FindMoviesForm.module.css';
 
 interface Props {
+  defQuery?: string;
   onSubmitForm: (q: string) => void;
 }
 
-export default function FindMoviesForm({ onSubmitForm }: Props) {
-  const [query, setQuery] = useState('');
+export default function FindMoviesForm({ defQuery = '', onSubmitForm }: Props) {
+  const [query, setQuery] = useState(defQuery);
 
   const handlerChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const q = e.currentTarget.value;
