@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, Outlet, useParams } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useParams } from 'react-router-dom';
 import { fetchMoviesDetails } from '../../services/api';
 import s from './MovieDetailsPageView.module.css';
 
@@ -26,6 +26,9 @@ const img_url =
 export default function MovieDetailsPageView() {
   const [movie, setMovie] = useState<IMovieDetails | null>(null);
   const { movieId } = useParams();
+  const location = useLocation();
+  const backUrl = location?.state?.from ?? '/';
+  const stateFrom = location.state.from;
 
   useEffect(() => {
     async function requestMoviesDetails() {
@@ -41,6 +44,9 @@ export default function MovieDetailsPageView() {
     <>
       {movie && (
         <section className={s.section}>
+          <Link to={backUrl} className={s.linkBack}>
+            &#8604; Go back
+          </Link>
           <div className={s.movieWrapper}>
             <div className={s.imgWrapper}>
               <img
@@ -89,6 +95,7 @@ export default function MovieDetailsPageView() {
                   className={({ isActive }) => {
                     return isActive ? s.detailsLink__active : s.detailsLink;
                   }}
+                  state={{ from: stateFrom }}
                 >
                   Cast
                 </NavLink>
@@ -99,6 +106,7 @@ export default function MovieDetailsPageView() {
                   className={({ isActive }) => {
                     return isActive ? s.detailsLink__active : s.detailsLink;
                   }}
+                  state={{ from: stateFrom }}
                 >
                   Reviews
                 </NavLink>
