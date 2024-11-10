@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMoviesReviews } from '../../services/api';
 import s from './ReviewsView.module.css';
+import InformationMessage from '../../components/InformationMessage/InformationMessage';
 
 interface IReview {
   id: string;
@@ -39,6 +40,7 @@ export default function ReviewsView() {
           })}
         </ul>
       )}
+      {reviews?.length === 0 && <InformationMessage />}
     </>
   );
 }

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { fetchTrendingMovies } from '../../services/api';
 import Section from '../../components/Section/Section';
 import MoviesList from '../../components/MoviesList/MoviesList';
+import InformationMessage from '../../components/InformationMessage/InformationMessage';
 
 export default function HomePageView() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(null);
 
   useEffect(() => {
     async function requestMovies() {
@@ -19,7 +20,7 @@ export default function HomePageView() {
   return (
     <>
       <Section title="Trending today">
-        <MoviesList movies={movies}></MoviesList>
+        {movies ? <MoviesList movies={movies}></MoviesList> : <InformationMessage />}
       </Section>
     </>
   );

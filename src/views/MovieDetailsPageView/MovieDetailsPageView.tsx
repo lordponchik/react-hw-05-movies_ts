@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, Outlet, useLocation, useParams } from 'react-router-dom';
 import { fetchMoviesDetails } from '../../services/api';
 import s from './MovieDetailsPageView.module.css';
+import InformationMessage from '../../components/InformationMessage/InformationMessage';
 
 interface IGenres {
   id: number;
@@ -42,7 +43,7 @@ export default function MovieDetailsPageView() {
 
   return (
     <>
-      {movie && (
+      {movie ? (
         <section className={s.section}>
           <Link to={backUrl} className={s.linkBack}>
             &#8604; Go back
@@ -116,6 +117,8 @@ export default function MovieDetailsPageView() {
             <Outlet />
           </div>
         </section>
+      ) : (
+        <InformationMessage />
       )}
     </>
   );

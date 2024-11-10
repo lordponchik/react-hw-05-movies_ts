@@ -4,6 +4,7 @@ import FindMoviesForm from '../../components/FindMoviesForm/FindMoviesForm';
 import { fetchMovies } from '../../services/api';
 import MoviesList from '../../components/MoviesList/MoviesList';
 import { useSearchParams } from 'react-router-dom';
+import InformationMessage from '../../components/InformationMessage/InformationMessage';
 
 export default function MoviesPageView() {
   const [movies, setMovies] = useState(null);
@@ -35,7 +36,7 @@ export default function MoviesPageView() {
     <Section title="Find a movie">
       <FindMoviesForm onSubmitForm={onSubmit} defQuery={query ?? ''}></FindMoviesForm>
 
-      {movies && <MoviesList movies={movies}></MoviesList>}
+      {movies ? <MoviesList movies={movies}></MoviesList> : <InformationMessage />}
     </Section>
   );
 }

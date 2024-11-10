@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMoviesCredits } from '../../services/api';
 import s from './CastView.module.css';
+import InformationMessage from '../../components/InformationMessage/InformationMessage';
 
 interface ICast {
   cast_id: number;
@@ -29,7 +30,7 @@ export default function CastView() {
 
   return (
     <>
-      {movieCast && (
+      {movieCast ? (
         <ul className={s.cast}>
           {movieCast.map(({ cast_id, character, name, profile_path }) => {
             return (
@@ -48,6 +49,8 @@ export default function CastView() {
             );
           })}
         </ul>
+      ) : (
+        <InformationMessage />
       )}
     </>
   );
