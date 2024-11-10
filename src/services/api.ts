@@ -29,3 +29,7 @@ export async function fetchMoviesDetails(id: number) {
 export async function fetchMoviesCredits(id: number) {
   return await fetchMoviesAPI(`movie/${id}/credits?language=en-US`);
 }
+
+export async function fetchMoviesReviews(id: number) {
+  return await fetchMoviesAPI(`movie/${id}/reviews?language=en-US&page=1`);
+}
