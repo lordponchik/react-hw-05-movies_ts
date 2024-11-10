@@ -18,7 +18,7 @@ const img_url =
 export default function CastView() {
   const { movieId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [movieCast, setMovieCast] = useState<ICast[] | null>(null);
+  const [movieCast, setMovieCast] = useState<ICast[]>([]);
 
   useEffect(() => {
     async function requestMovieCast() {
@@ -27,6 +27,7 @@ export default function CastView() {
         const { cast } = await fetchMoviesCredits(Number(movieId));
 
         setMovieCast(cast);
+        console.log(movieCast);
       } catch (error) {
       } finally {
         setIsLoading(false);
@@ -39,7 +40,7 @@ export default function CastView() {
   return (
     <>
       {isLoading && <Loader />}
-      {movieCast ? (
+      {movieCast.length !== 0 ? (
         <ul className={s.cast}>
           {movieCast.map(({ cast_id, character, name, profile_path }) => {
             return (
