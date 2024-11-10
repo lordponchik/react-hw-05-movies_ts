@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import IMovie from '../../interfaces/Movie.interface';
 import s from './MoviesListItem.module.css';
 
@@ -12,9 +12,11 @@ const img_url =
 export default function MoviesListItem({
   movie: { id, poster_path, original_name, title, name },
 }: Props) {
+  const loc = useLocation();
+
   return (
     <li className={s.movie}>
-      <Link to={`/movies/${id}`}>
+      <Link to={`/movies/${id}`} state={{ from: loc }}>
         <div className={s.imgWrapper}>
           <img
             src={poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : img_url}
