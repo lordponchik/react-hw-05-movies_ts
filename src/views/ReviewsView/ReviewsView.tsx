@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { fetchMoviesReviews } from '../../services/api';
 import s from './ReviewsView.module.css';
 import InformationMessage from '../../components/InformationMessage/InformationMessage';
+import Loader from '../../components/Loader/Loader';
 
 interface IReview {
   id: string;
@@ -12,13 +13,20 @@ interface IReview {
 
 export default function ReviewsView() {
   const [reviews, setReviews] = useState<IReview[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { movieId } = useParams();
 
   useEffect(() => {
     async function requestMovieReviews() {
-      const { results } = await fetchMoviesReviews(Number(movieId));
+      setIsLoading(true);
+      try {
+        const { results } = await fetchMoviesReviews(Number(movieId));
 
-      setReviews(results);
+        setReviews(results);
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     requestMovieReviews();
@@ -26,6 +34,7 @@ export default function ReviewsView() {
 
   return (
     <>
+      {isLoading && <Loader />}
       {reviews && (
         <ul className={s.reviews}>
           {reviews.map(({ id, author, content }) => {

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { fetchMoviesCredits } from '../../services/api';
 import s from './CastView.module.css';
 import InformationMessage from '../../components/InformationMessage/InformationMessage';
+import Loader from '../../components/Loader/Loader';
 
 interface ICast {
   cast_id: number;
@@ -16,13 +17,20 @@ const img_url =
 
 export default function CastView() {
   const { movieId } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
   const [movieCast, setMovieCast] = useState<ICast[] | null>(null);
 
   useEffect(() => {
     async function requestMovieCast() {
-      const { cast } = await fetchMoviesCredits(Number(movieId));
+      setIsLoading(true);
+      try {
+        const { cast } = await fetchMoviesCredits(Number(movieId));
 
-      setMovieCast(cast);
+        setMovieCast(cast);
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     requestMovieCast();
@@ -30,6 +38,7 @@ export default function CastView() {
 
   return (
     <>
+      {isLoading && <Loader />}
       {movieCast ? (
         <ul className={s.cast}>
           {movieCast.map(({ cast_id, character, name, profile_path }) => {
