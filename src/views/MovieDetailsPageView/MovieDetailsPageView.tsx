@@ -84,12 +84,22 @@ export default function MovieDetailsPageView() {
             <h3 className={s.addtionalInfo}>Additional information</h3>
             <ul className={s.detailsNav}>
               <li className={s.detailsItem}>
-                <NavLink to="cast" className={s.detailsLink}>
+                <NavLink
+                  to="cast"
+                  className={({ isActive }) => {
+                    return isActive ? s.detailsLink__active : s.detailsLink;
+                  }}
+                >
                   Cast
                 </NavLink>
               </li>
               <li>
-                <NavLink to="reviews" className={s.detailsLink}>
+                <NavLink
+                  to="reviews"
+                  className={({ isActive }) => {
+                    return isActive ? s.detailsLink__active : s.detailsLink;
+                  }}
+                >
                   Reviews
                 </NavLink>
               </li>
