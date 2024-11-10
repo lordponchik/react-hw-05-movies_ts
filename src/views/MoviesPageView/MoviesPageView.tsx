@@ -4,9 +4,10 @@ import FindMoviesForm from '../../components/FindMoviesForm/FindMoviesForm';
 import { fetchMovies } from '../../services/api';
 import MoviesList from '../../components/MoviesList/MoviesList';
 import { useSearchParams } from 'react-router-dom';
-import InformationMessage from '../../components/InformationMessage/InformationMessage';
+import Loader from '../../components/Loader/Loader';
 
 export default function MoviesPageView() {
+  const [isLoading, setIsLoading] = useState(false);
   const [movies, setMovies] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query');
@@ -15,9 +16,16 @@ export default function MoviesPageView() {
     if (query === null || query === '') return;
 
     async function requestMovies() {
-      const { results } = await fetchMovies(query as string);
+      setIsLoading(true);
 
-      setMovies(results);
+      try {
+        const { results } = await fetchMovies(query as string);
+
+        setMovies(results);
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     requestMovies();
@@ -35,8 +43,8 @@ export default function MoviesPageView() {
   return (
     <Section title="Find a movie">
       <FindMoviesForm onSubmitForm={onSubmit} defQuery={query ?? ''}></FindMoviesForm>
-
-      {movies ? <MoviesList movies={movies}></MoviesList> : <InformationMessage />}
+      {isLoading && <Loader />}
+      {movies && <MoviesList movies={movies}></MoviesList>}
     </Section>
   );
 }
