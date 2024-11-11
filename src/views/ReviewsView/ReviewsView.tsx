@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMoviesReviews } from '../../services/api';
 import s from './ReviewsView.module.css';
 import InformationMessage from '../../components/InformationMessage/InformationMessage';
 import Loader from '../../components/Loader/Loader';
+import { useQuery } from '@tanstack/react-query';
 
 interface IReview {
   id: string;
@@ -11,30 +11,27 @@ interface IReview {
   content: string;
 }
 
+async function requestMovieReviews(movieId: number) {
+  const { results } = await fetchMoviesReviews(movieId);
+
+  return results;
+}
+
 export default function ReviewsView() {
-  const [reviews, setReviews] = useState<IReview[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const { movieId } = useParams();
-
-  useEffect(() => {
-    async function requestMovieReviews() {
-      setIsLoading(true);
-      try {
-        const { results } = await fetchMoviesReviews(Number(movieId));
-
-        setReviews(results);
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    requestMovieReviews();
-  }, [movieId]);
+  const {
+    data: reviews,
+    isPending,
+    isError,
+  } = useQuery<IReview[]>({
+    queryKey: ['reviews', movieId],
+    queryFn: () => requestMovieReviews(Number(movieId)),
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <>
-      {isLoading && <Loader />}
+      {isPending && <Loader />}
       {reviews && (
         <ul className={s.reviews}>
           {reviews.map(({ id, author, content }) => {
@@ -49,7 +46,7 @@ export default function ReviewsView() {
           })}
         </ul>
       )}
-      {reviews?.length === 0 && <InformationMessage />}
+      {(isError || reviews?.length) === 0 && <InformationMessage />}
     </>
   );
 }
