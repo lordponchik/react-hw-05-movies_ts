@@ -4,6 +4,7 @@ import { fetchMoviesDetails } from '../../services/api';
 import s from './MovieDetailsPageView.module.css';
 import InformationMessage from '../../components/InformationMessage/InformationMessage';
 import Loader from '../../components/Loader/Loader';
+import { useQuery } from '@tanstack/react-query';
 
 interface IGenres {
   id: number;
@@ -25,34 +26,27 @@ interface IMovieDetails {
 const img_url =
   'https://images.unsplash.com/photo-1625315268158-bb9ef970ca77?q=80&w=2397&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
+async function requestMoviesDetails(movieId: number) {
+  const results = await fetchMoviesDetails(movieId);
+
+  return results;
+}
+
 export default function MovieDetailsPageView() {
-  const [movie, setMovie] = useState<IMovieDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const { movieId } = useParams();
+  const { data, isPending } = useQuery<IMovieDetails>({
+    queryKey: ['moviesDetails', movieId],
+    queryFn: () => requestMoviesDetails(Number(movieId)),
+    refetchOnWindowFocus: false,
+  });
   const location = useLocation();
   const backUrl = location?.state?.from ?? '/';
-  const stateFrom = location.state.from;
-
-  useEffect(() => {
-    async function requestMoviesDetails() {
-      setIsLoading(true);
-      try {
-        const results = await fetchMoviesDetails(Number(movieId));
-
-        setMovie(results);
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    requestMoviesDetails();
-  }, [movieId]);
+  const stateFrom = backUrl;
 
   return (
     <>
-      {isLoading && <Loader />}
-      {movie ? (
+      {isPending && <Loader />}
+      {data ? (
         <section className={s.section}>
           <Link to={backUrl} className={s.linkBack}>
             &#8604; Go back
@@ -61,34 +55,32 @@ export default function MovieDetailsPageView() {
             <div className={s.imgWrapper}>
               <img
                 src={
-                  movie.poster_path
-                    ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                    : img_url
+                  data.poster_path ? `https://image.tmdb.org/t/p/w500/${data.poster_path}` : img_url
                 }
                 alt=""
               />
             </div>
             <div className={s.movieDescription}>
               <h1 className={s.movieTitle}>
-                {movie.title || movie.name || movie.original_name}{' '}
-                {`(${movie.release_date.split('-')[0]})`}
+                {data.title || data.name || data.original_name}{' '}
+                {`(${data.release_date.split('-')[0]})`}
               </h1>
               <p className={s.userScore}>
                 User score:
-                {movie.vote_average > 0 ? ` ${Math.trunc(movie.vote_average * 10)}%` : ' we wate'}
+                {data.vote_average > 0 ? ` ${Math.trunc(data.vote_average * 10)}%` : ' we wate'}
               </p>
 
-              {movie.overview && (
+              {data.overview && (
                 <>
                   <h2 className={s.overviewTitle}>Overview</h2>
-                  <p className={s.overview}>{movie.overview}</p>
+                  <p className={s.overview}>{data.overview}</p>
                 </>
               )}
-              {movie.genres && (
+              {data.genres && (
                 <>
                   <h2 className={s.genresTitle}>Genres</h2>
                   <ul className={s.genres}>
-                    {movie.genres.map(({ id, name }) => {
+                    {data.genres.map(({ id, name }) => {
                       return <li key={id}>{name}</li>;
                     })}
                   </ul>
