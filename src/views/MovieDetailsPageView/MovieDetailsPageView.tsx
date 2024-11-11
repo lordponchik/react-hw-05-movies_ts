@@ -33,7 +33,7 @@ async function requestMoviesDetails(movieId: number) {
 
 export default function MovieDetailsPageView() {
   const { movieId } = useParams();
-  const { data, isPending } = useQuery<IMovieDetails>({
+  const { data, isPending, isError } = useQuery<IMovieDetails>({
     queryKey: ['moviesDetails', movieId],
     queryFn: () => requestMoviesDetails(Number(movieId)),
     refetchOnWindowFocus: false,
@@ -45,6 +45,7 @@ export default function MovieDetailsPageView() {
   return (
     <>
       {isPending && <Loader />}
+      {(isError || data == undefined) && <InformationMessage />}
       {data ? (
         <section className={s.section}>
           <Link to={backUrl} className={s.linkBack}>
