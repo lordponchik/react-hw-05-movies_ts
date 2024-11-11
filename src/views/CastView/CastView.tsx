@@ -40,7 +40,7 @@ export default function CastView() {
             return (
               <li key={cast_id} className={s.castItem}>
                 <img
-                  src={profile_path ? `https://image.tmdb.org/t/p/w300/${profile_path}` : img_url}
+                  src={profile_path ? `https://image.tmdb.org/t/p/w300${profile_path}` : img_url}
                   alt={name}
                   width={100}
                   className={s.profileImg}
