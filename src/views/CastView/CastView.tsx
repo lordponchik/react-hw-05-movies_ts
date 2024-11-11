@@ -4,6 +4,7 @@ import { fetchMoviesCredits } from '../../services/api';
 import s from './CastView.module.css';
 import InformationMessage from '../../components/InformationMessage/InformationMessage';
 import Loader from '../../components/Loader/Loader';
+import { useQuery } from '@tanstack/react-query';
 
 interface ICast {
   cast_id: number;
@@ -15,34 +16,27 @@ interface ICast {
 const img_url =
   'https://images.unsplash.com/photo-1601027847350-0285867c31f7?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
+async function requestMovieCast(movieId: number) {
+  const { cast } = await fetchMoviesCredits(movieId);
+
+  return cast;
+}
+
 export default function CastView() {
   const { movieId } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [movieCast, setMovieCast] = useState<ICast[]>([]);
-
-  useEffect(() => {
-    async function requestMovieCast() {
-      setIsLoading(true);
-      try {
-        const { cast } = await fetchMoviesCredits(Number(movieId));
-
-        setMovieCast(cast);
-        console.log(movieCast);
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    requestMovieCast();
-  }, [movieId]);
+  const { data, isPending, isError } = useQuery<ICast[]>({
+    queryKey: ['movieCast', movieId],
+    queryFn: () => requestMovieCast(Number(movieId)),
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <>
-      {isLoading && <Loader />}
-      {movieCast.length !== 0 ? (
+      {isPending && <Loader />}
+      {isError && <InformationMessage />}
+      {data && data.length !== 0 ? (
         <ul className={s.cast}>
-          {movieCast.map(({ cast_id, character, name, profile_path }) => {
+          {data.map(({ cast_id, character, name, profile_path }) => {
             return (
               <li key={cast_id} className={s.castItem}>
                 <img
