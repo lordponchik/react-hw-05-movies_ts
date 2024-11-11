@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Link, NavLink, Outlet, useLocation, useParams } from 'react-router-dom';
 import { fetchMoviesDetails } from '../../services/api';
 import s from './MovieDetailsPageView.module.css';
