@@ -5,45 +5,42 @@ import { fetchMovies } from '../../services/api';
 import MoviesList from '../../components/MoviesList/MoviesList';
 import { useSearchParams } from 'react-router-dom';
 import Loader from '../../components/Loader/Loader';
+import { useQuery } from '@tanstack/react-query';
+import InformationMessage from '../../components/InformationMessage/InformationMessage';
+
+async function requestMovies(query: string | null) {
+  const { results } = await fetchMovies(query as string);
+
+  return results;
+}
 
 export default function MoviesPageView() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [movies, setMovies] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query');
-
-  useEffect(() => {
-    if (query === null || query === '') return;
-
-    async function requestMovies() {
-      setIsLoading(true);
-
-      try {
-        const { results } = await fetchMovies(query as string);
-
-        setMovies(results);
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    requestMovies();
-  }, [query]);
+  const {
+    data: movies,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['movies', query],
+    queryFn: () => requestMovies(query),
+    refetchOnWindowFocus: false,
+    enabled: !!query,
+  });
 
   const onSubmit = (q: string) => {
     if (q === query) {
       return;
     }
 
-    setMovies(null);
     setSearchParams({ query: q });
   };
 
   return (
     <Section title="Find a movie">
       <FindMoviesForm onSubmitForm={onSubmit} defQuery={query ?? ''}></FindMoviesForm>
-      {isLoading && <Loader />}
+      {isPending && <Loader />}
+      {(isError || movies?.length === 0) && <InformationMessage />}
       {movies && <MoviesList movies={movies}></MoviesList>}
     </Section>
   );
