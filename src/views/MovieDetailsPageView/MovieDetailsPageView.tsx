@@ -1,9 +1,15 @@
-import { Link, NavLink, Outlet, useLocation, useParams } from 'react-router-dom';
-import { fetchMoviesDetails } from '../../services/api';
-import s from './MovieDetailsPageView.module.css';
-import InformationMessage from '../../components/InformationMessage/InformationMessage';
-import Loader from '../../components/Loader/Loader';
-import { useQuery } from '@tanstack/react-query';
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useParams,
+} from "react-router-dom";
+import { fetchMoviesDetails } from "../../services/api";
+import s from "./MovieDetailsPageView.module.css";
+import InformationMessage from "../../components/InformationMessage/InformationMessage";
+import Loader from "../../components/Loader/Loader";
+import { useQuery } from "@tanstack/react-query";
 
 interface IGenres {
   id: number;
@@ -23,7 +29,7 @@ interface IMovieDetails {
 }
 
 const img_url =
-  'https://images.unsplash.com/photo-1625315268158-bb9ef970ca77?q=80&w=2397&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  "https://images.unsplash.com/photo-1625315268158-bb9ef970ca77?q=80&w=2397&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 async function requestMoviesDetails(movieId: number) {
   const results = await fetchMoviesDetails(movieId);
@@ -34,18 +40,18 @@ async function requestMoviesDetails(movieId: number) {
 export default function MovieDetailsPageView() {
   const { movieId } = useParams();
   const { data, isPending, isError } = useQuery<IMovieDetails>({
-    queryKey: ['moviesDetails', movieId],
+    queryKey: ["moviesDetails", movieId],
     queryFn: () => requestMoviesDetails(Number(movieId)),
     refetchOnWindowFocus: false,
   });
   const location = useLocation();
-  const backUrl = location?.state?.from ?? '/';
+  const backUrl = location?.state?.from ?? "/";
   const stateFrom = backUrl;
 
   return (
     <>
       {isPending && <Loader />}
-      {(isError || data == undefined) && <InformationMessage />}
+      {(isError || data === undefined) && <InformationMessage />}
       {data ? (
         <section className={s.section}>
           <Link to={backUrl} className={s.linkBack}>
@@ -55,19 +61,23 @@ export default function MovieDetailsPageView() {
             <div className={s.imgWrapper}>
               <img
                 src={
-                  data.poster_path ? `https://image.tmdb.org/t/p/w500/${data.poster_path}` : img_url
+                  data.poster_path
+                    ? `https://image.tmdb.org/t/p/w500/${data.poster_path}`
+                    : img_url
                 }
                 alt=""
               />
             </div>
             <div className={s.movieDescription}>
               <h1 className={s.movieTitle}>
-                {data.title || data.name || data.original_name}{' '}
-                {`(${data.release_date.split('-')[0]})`}
+                {data.title || data.name || data.original_name}{" "}
+                {`(${data.release_date.split("-")[0]})`}
               </h1>
               <p className={s.userScore}>
                 User score:
-                {data.vote_average > 0 ? ` ${Math.trunc(data.vote_average * 10)}%` : ' we wate'}
+                {data.vote_average > 0
+                  ? ` ${Math.trunc(data.vote_average * 10)}%`
+                  : " we wate"}
               </p>
 
               {data.overview && (
