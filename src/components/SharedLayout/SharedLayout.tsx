@@ -1,13 +1,14 @@
-import { Suspense } from 'react';
-import Header from '../Header/Header';
-import { Outlet } from 'react-router-dom';
+import { Suspense } from "react";
+import Header from "../Header/Header";
+import { Outlet } from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 export default function SharedLayout() {
   return (
     <>
       <Header />
 
-      <Suspense fallback={<h1>Загрузка</h1>}>
+      <Suspense fallback={<Loader />}>
         <Outlet />
       </Suspense>
     </>
