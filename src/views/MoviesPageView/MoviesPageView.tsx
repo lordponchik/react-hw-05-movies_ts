@@ -18,7 +18,7 @@ export default function MoviesPageView() {
   const query = searchParams.get("query");
   const {
     data: movies,
-    isPending,
+    isLoading,
     isError,
   } = useQuery({
     queryKey: ["movies", query],
@@ -41,7 +41,7 @@ export default function MoviesPageView() {
         onSubmitForm={onSubmit}
         defQuery={query ?? ""}
       ></FindMoviesForm>
-      {isPending && <Loader />}
+      {isLoading && <Loader />}
       {(isError || movies?.length === 0) && <InformationMessage />}
       {movies && <MoviesList movies={movies}></MoviesList>}
     </Section>
