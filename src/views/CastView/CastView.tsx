@@ -1,9 +1,11 @@
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+
 import { fetchMoviesCredits } from '../../services/api';
-import s from './CastView.module.css';
 import InformationMessage from '../../components/InformationMessage/InformationMessage';
 import Loader from '../../components/Loader/Loader';
-import { useQuery } from '@tanstack/react-query';
+
+import s from './CastView.module.css';
 
 interface ICast {
   cast_id: number;
